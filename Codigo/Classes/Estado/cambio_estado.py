@@ -37,3 +37,11 @@ class CambioEstado:
     def estado(self, value):
         # Executes this code when object.att
         self.__estado = value
+
+
+    # Mensajes de CU
+
+    # Mensaje 22
+    def get_nombre_estado(self):
+        # Mensaje 23
+        return self.estado.nombre

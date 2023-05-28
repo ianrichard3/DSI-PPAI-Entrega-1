@@ -133,9 +133,8 @@ class Llamada:
     
     # Add cambio de estado
     def add_cambio_estado(self, cambio_estado: cambio_estado.CambioEstado):
+        # Puede ser que haga falta hacer un add in order
         self.__cambios_estado.append(cambio_estado)
-            
-    
 
 
     # Metodos de ejecucion de CU
@@ -151,5 +150,19 @@ class Llamada:
     
     # mensaje 10   - y el mensaje 11 con el len
     def tiene_respuesta_encuesta(self):
-        # return len(self.respuestas_de_encuesta) > 0
-        return self.respuestas_de_encuesta # Mensaje 11
+        # Mensaje 11
+        return len(self.respuestas_de_encuesta) > 0  
+        # return self.respuestas_de_encuesta.existe_respuesta() (mensaje 11)
+        # return self.respuestas_de_encuesta
+
+    # mensaje 17
+    def get_nombre_de_cliente(self):
+        # Mensaje 18
+        return self.cliente.nombre_completo
+
+    # mensaje 20
+    def buscar_ultimo_estado(self):
+        # Mensaje 21      (Acceder al ultimo elemento de la lista cambios de estado)
+        ultimo_cambio_estado = self.cambios_estado[-1]  
+        # Mensaje 22
+        return ultimo_cambio_estado.get_nombre_estado()

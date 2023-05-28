@@ -26,8 +26,13 @@ sys.path.append("../Codigo")
 from Support.funciones_soporte import from_string_to_date
 
 
+
+
+
+
+"""
 #  //// TEST mensajes 8-11
-""" 
+
 r_posible = RespuestaPosible("Correcto", "12")
 
 r_cliente = RespuestaDeCliente(datetime(2001, 4, 12, 18, 34, 20), r_posible)
@@ -57,9 +62,9 @@ gestor.llamadas.append(llamada2)
 
 for llamada_found in gestor.buscar_llamadas_en_periodo():
     print(llamada_found.descripcion_operador)
+
 """
-
-
+"""
 #  //// Test mensajes 24-33
 
 # Ejemplos encuestas
@@ -96,12 +101,12 @@ pregunta1_encuesta2.add_respuesta(rta2_pregunta3_encuesta1)
 
 
 
-encuesta2 = Encuesta("Encuesta numero 1", fecha_fin_vigencia)
-encuesta2.add_pregunta(pregunta1_encuesta1)
-encuesta2.add_pregunta(pregunta2_encuesta1)
+encuesta1 = Encuesta("Encuesta numero 1", fecha_fin_vigencia)
+encuesta1.add_pregunta(pregunta1_encuesta1)
+encuesta1.add_pregunta(pregunta2_encuesta1)
 
-encuesta1 = Encuesta("Encuesta numero 2", fecha_fin_vigencia)
-encuesta1.add_pregunta(pregunta1_encuesta2)
+encuesta2 = Encuesta("Encuesta numero 2", fecha_fin_vigencia)
+encuesta2.add_pregunta(pregunta1_encuesta2)
 
 
 
@@ -124,6 +129,7 @@ llamada1.add_respuesta_encuesta(r_cliente1)
 llamada1.add_respuesta_encuesta(r_cliente2)
 llamada1.add_respuesta_encuesta(r_cliente3)
 
+
 # Creacion Gestor
 
 gestor = GestorConsultaEncuesta()
@@ -140,3 +146,147 @@ for datos_encuesta in datos_encuestas:
     rta = datos_encuesta.get("respuesta")
     enc = datos_encuesta.get("encuesta")
     print(f"Pregunta: '{preg}'  |  Respuesta: '{rta}'  |  Encuesta:  '{enc}'")
+
+
+
+# Prueba mensajes 16-23
+
+
+fecha_hora_inicio_ce1 = datetime(2023, 2, 14, 14, 34, 2)     # 14/2/23  14:34:02
+fecha_hora_inicio_ce2 = datetime(2023, 3, 14, 16, 34, 2)     # 14/3/23  16:34:02
+fecha_hora_inicio_ce3 = datetime(2023, 1, 20, 11, 34, 2)     # 20/1/23  11:34:02
+
+
+# Objetos estado
+estado_finalizado = Estado("Finalizado")
+estado_pendiente = Estado("Pendiente")
+estado_creado = Estado("Creado")
+
+# Objetos cambio de estado
+cambio_estado_1 = CambioEstado(fecha_hora_inicio_ce1, estado_creado)
+cambio_estado_2 = CambioEstado(fecha_hora_inicio_ce2, estado_pendiente)
+cambio_estado_3 = CambioEstado(fecha_hora_inicio_ce3, estado_finalizado)
+
+# Objetos cliente
+cliente1 = Cliente("58325392", "Ian El amigo", "214214124")
+
+# Objetos de llamada
+llamada1 = Llamada("Operador Flaquito", "Llamada profesional", 2.4, True, "", cliente1, cambio_estado_1)
+llamada1.add_cambio_estado(cambio_estado_2)
+llamada1.add_cambio_estado(cambio_estado_3)
+
+# Objeto de Gestor
+gestor = GestorConsultaEncuesta()
+gestor.add_llamada(llamada1)
+gestor.llamada_seleccionada = llamada1
+
+
+datos_llamada = gestor.buscar_datos_llamada()
+print(datos_llamada.get("duracion"))
+print(datos_llamada.get("estado_actual"))
+print(datos_llamada.get("cliente"))
+
+""" 
+
+
+
+# Prueba 16 - 33
+
+
+# Ejemplos encuestas
+
+fecha_fin_vigencia = date(2010, 4, 21)
+
+# pregunta 1
+pregunta1_encuesta1 = Pregunta("Te gusto?")
+rta1_pregunta1_encuesta1 = RespuestaPosible("Si", "Si")
+rta2_pregunta1_encuesta1 = RespuestaPosible("No", "No")
+pregunta1_encuesta1.add_respuesta(rta1_pregunta1_encuesta1)
+pregunta1_encuesta1.add_respuesta(rta2_pregunta1_encuesta1)
+
+# pregunta 2
+
+pregunta2_encuesta1 = Pregunta("Reseña de llamada:")
+rta1_pregunta2_encuesta1 = RespuestaPosible("Buena", "Buena")
+rta2_pregunta2_encuesta1 = RespuestaPosible("Mala", "Mala")
+rta3_pregunta2_encuesta1 = RespuestaPosible("Muy buena", "Muy buena")
+rta4_pregunta2_encuesta1 = RespuestaPosible("Muy mala", "Muy mala")
+pregunta2_encuesta1.add_respuesta(rta1_pregunta2_encuesta1)
+pregunta2_encuesta1.add_respuesta(rta2_pregunta2_encuesta1)
+pregunta2_encuesta1.add_respuesta(rta3_pregunta2_encuesta1)
+pregunta2_encuesta1.add_respuesta(rta4_pregunta2_encuesta1)
+
+# pregunta 3 (p 1 encuesta 2)
+pregunta1_encuesta2 = Pregunta("Como andas amigo")
+rta1_pregunta3_encuesta1 = RespuestaPosible("Bien", "Bien")
+rta2_pregunta3_encuesta1 = RespuestaPosible("Mal", "Mal")
+pregunta1_encuesta2.add_respuesta(rta1_pregunta3_encuesta1)
+pregunta1_encuesta2.add_respuesta(rta2_pregunta3_encuesta1)
+
+
+
+# ENCUESTAS
+
+encuesta1 = Encuesta("Encuesta numero 1", fecha_fin_vigencia)
+encuesta1.add_pregunta(pregunta1_encuesta1)
+encuesta1.add_pregunta(pregunta2_encuesta1)
+
+encuesta2 = Encuesta("Encuesta numero 2", fecha_fin_vigencia)
+encuesta2.add_pregunta(pregunta1_encuesta2)
+
+
+
+# Fechas cambio estado
+
+fecha_hora_inicio_ce1 = datetime(2023, 2, 14, 14, 34, 2)     # 14/2/23  14:34:02
+fecha_hora_inicio_ce2 = datetime(2023, 3, 14, 16, 34, 2)     # 14/3/23  16:34:02
+fecha_hora_inicio_ce3 = datetime(2023, 1, 20, 11, 34, 2)     # 20/1/23  11:34:02
+
+
+# Objetos estado
+estado_finalizado = Estado("Finalizado")
+estado_pendiente = Estado("Pendiente")
+estado_creado = Estado("Creado")
+
+# Objetos cambio de estado
+cambio_estado_1 = CambioEstado(fecha_hora_inicio_ce1, estado_creado)
+cambio_estado_2 = CambioEstado(fecha_hora_inicio_ce2, estado_pendiente)
+cambio_estado_3 = CambioEstado(fecha_hora_inicio_ce3, estado_finalizado)
+
+
+
+
+
+
+# datos llamada
+cliente1 = Cliente("23453432", "Humberto Primo", "3513433777")
+estado_iniciado = Estado("Iniciado")
+cambio_estado_1 = CambioEstado(datetime(2001, 4, 12, 18, 14, 20), estado_iniciado) 
+llamada1 = Llamada("Flaquito 1", "Llama profesional", 3.3, True, "Completada", cliente1, cambio_estado_1)
+r_cliente1 = RespuestaDeCliente(datetime(2001, 4, 12, 18, 34, 20), rta1_pregunta2_encuesta1)
+r_cliente2 = RespuestaDeCliente(datetime(2001, 4, 12, 18, 34, 20), rta1_pregunta3_encuesta1)
+r_cliente3 = RespuestaDeCliente(datetime(2001, 4, 12, 18, 34, 20), rta4_pregunta2_encuesta1)
+
+
+llamada1.add_respuesta_encuesta(r_cliente1)
+llamada1.add_respuesta_encuesta(r_cliente2)
+llamada1.add_respuesta_encuesta(r_cliente3)
+llamada1.add_cambio_estado(cambio_estado_2)
+llamada1.add_cambio_estado(cambio_estado_3)
+
+
+
+# Objeto de Gestor
+gestor = GestorConsultaEncuesta()
+gestor.add_llamada(llamada1)
+gestor.llamada_seleccionada = llamada1
+gestor.add_encuesta(encuesta1)
+gestor.add_encuesta(encuesta2)
+
+datos_llamada = gestor.buscar_datos_llamada()
+print(datos_llamada.get("duracion"))
+print(datos_llamada.get("estado_actual"))
+print(datos_llamada.get("cliente"))
+print(datos_llamada.get("datos_encuesta"))
+
+

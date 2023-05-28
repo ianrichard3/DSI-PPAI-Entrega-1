@@ -40,3 +40,10 @@ class RespuestaDeCliente:
     def respuesta_seleccionada(self, value):
         # Executes this code when object.att = value
         self.__respuesta_seleccionada = value
+
+
+    # MEnsajes de CU
+
+    # Mensaje 27
+    def get_descripcion_rta(self):
+        return self.respuesta_seleccionada.descripcion

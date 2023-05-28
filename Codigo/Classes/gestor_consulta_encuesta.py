@@ -1,5 +1,4 @@
 import sys
-import llamada
 from datetime import date, datetime
 from llamada import Llamada
 from encuesta import Encuesta
@@ -35,7 +34,7 @@ class GestorConsultaEncuesta:
     def fecha_inicio_periodo(self, value):
         # Executes this code when object.att = value
         self.__fecha_inicio_periodo = value
-
+    
     
     # Getter fecha_fin_periodo
     @property
@@ -98,10 +97,6 @@ class GestorConsultaEncuesta:
 
 
 
-
-
-
-
     # Metodos de ejecucion de CU
 
     # Mensaje 8
@@ -119,11 +114,35 @@ class GestorConsultaEncuesta:
         for llamada in self.llamadas:
             # Ejecutamos dos metodos de llamada y le pasamos por parametro los atributos de gestor (fechas periodo: formato date)
             if llamada.es_de_periodo(self.fecha_inicio_periodo, self.fecha_fin_periodo) and llamada.tiene_respuesta_encuesta():
-                print("llamada en periodo y con respuesta")
+                # print("llamada en periodo y con respuesta")
                 llamadas_en_periodo_con_respuesta.append(llamada)
 
         return llamadas_en_periodo_con_respuesta
     
+
+
+    # Mensaje 16
+    def buscar_datos_llamada(self):
+        # Mensaje 17
+        nombre_cliente_llamada = self.llamada_seleccionada.get_nombre_de_cliente()
+        # Mensaje 19
+        nombre_estado_actual = self.buscar_ultimo_estado_llamada()
+        # Mensaje 23.2
+        duracion_llamada = self.llamada_seleccionada.duracion
+        # Mensaje 24
+        datos_encuestas_por_respuesta_cliente = self.buscar_encuesta_de_respuesta()
+
+        return {"cliente": nombre_cliente_llamada,
+                "estado_actual": nombre_estado_actual,
+                "duracion": duracion_llamada,
+                "datos_encuesta": datos_encuestas_por_respuesta_cliente}
+
+    # Mensaje 19
+    def buscar_ultimo_estado_llamada(self):
+        # Mensaje 20
+        ultimo_estado_llamada = self.llamada_seleccionada.buscar_ultimo_estado()
+        return ultimo_estado_llamada
+
 
     # Mensaje 24
     def buscar_encuesta_de_respuesta(self):
@@ -135,8 +154,9 @@ class GestorConsultaEncuesta:
         # Mensaje 25
         for respuesta_cliente in self.llamada_seleccionada.respuestas_de_encuesta:  
             # Mensajes 26 y 27
-            descripcion_respuesta_cliente = respuesta_cliente.respuesta_seleccionada.descripcion
-            # Mensaje 28
+            descripcion_respuesta_cliente = respuesta_cliente.get_descripcion_rta()
+
+            # Mensaje 28    -> Buscar datos de la encuesta de llamada segun la respuesta del cliente
             datos_respuesta_de_llamada = self.buscar_datos_encuesta_llamada(descripcion_respuesta_cliente)
             if datos_respuesta_de_llamada:  # Si no es una lista vacia
                 todos_datos_respuestas_de_llamada.extend(datos_respuesta_de_llamada)  # Muy importante mergear las listas y no agregar otra lista dentro de otra
@@ -147,16 +167,17 @@ class GestorConsultaEncuesta:
     # Mensaje 28
     def buscar_datos_encuesta_llamada(self, respuesta_cliente):
         """
-        Busca los datos de todas las repuestas, su pregunta, su encuesta
+        Busca los datos de la repuesta, su pregunta, su encuesta
         """
         datos_respuesta_de_llamada = []
         for encuesta in self.encuestas:
+            # Mensaje 29
             datos_respuesta = encuesta.es_tu_respuesta(respuesta_cliente)
+            # Si es respuesta posible de la encuesta
             if datos_respuesta != False:
                 datos_respuesta_de_llamada.append(datos_respuesta)
         return datos_respuesta_de_llamada
-            
-    
+
 
 
 
@@ -165,10 +186,9 @@ class GestorConsultaEncuesta:
 
 
 """
-
-# -------------
-# - Pruebilla -
-# -------------
+# ---------------
+# -  Pruebilla  -
+# ---------------
 
 # CADA INSTANCIA DE CADA CLASE DEBE SER CREADA EN EL ARCHIVO DE LA CLASE CORRESPONDIENTE, 
 # ASI CUANDO IMPORTEMOS CADA MODULO, SE IMPORTA LA CLASE Y LOS OBJETOS, EN ESTE CASO DE PRUEBA
@@ -208,7 +228,10 @@ gestor.fecha_fin_periodo = fecha_fin_periodo
 gestor.llamadas.append(llamada1)
 gestor.llamadas.append(llamada2)
 
-for llamada_found in gestor.buscar_llamadas_en_periodo():
+filtro = gestor.buscar_llamadas_en_periodo()
+print(filtro)
+for llamada_found in filtro:
     print(llamada_found.descripcion_operador)
 
 """
+

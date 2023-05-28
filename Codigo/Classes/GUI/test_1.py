@@ -15,7 +15,6 @@ llamadas_array = [
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("dark-blue")
 
-
 # Main app setup
 
 application = ctk.CTk()
@@ -26,7 +25,6 @@ application.grid_columnconfigure(0, weight=1)
 application.grid_columnconfigure(1, weight=1)
 application.grid_columnconfigure(2, weight=1)
 application.grid_columnconfigure(3, weight=1)
-
 
 def title():
     title_consultar_encuesta = ctk.CTkLabel(
