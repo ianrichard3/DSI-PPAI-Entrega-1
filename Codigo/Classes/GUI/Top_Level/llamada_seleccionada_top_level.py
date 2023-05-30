@@ -22,6 +22,7 @@ class LlamadaSeleccionadaTopLevel(ctk.CTkToplevel):
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1)
 
+
         # Titulo
         self.__llamada_seleccionada_lbl = ctk.CTkLabel(master=self, text="Llamada Seleccionada")
 
@@ -50,6 +51,7 @@ class LlamadaSeleccionadaTopLevel(ctk.CTkToplevel):
         self.__toplevel_fin = None
         self.__toplevel_csv = None
 
+        # Mensaje 39 -> Si se presiona la "X"
         self.protocol("WM_DELETE_WINDOW", lambda: exit())
 
     # Metodos
@@ -68,8 +70,9 @@ class LlamadaSeleccionadaTopLevel(ctk.CTkToplevel):
         self.__toplevel_csv = MessageBoxTopLevel(self)
         self.__toplevel_csv.mostrar_mensaje("Consulta Finalizada", "Se ha generado el CSV \n'exitosamente'", "Aceptar")
         self.withdraw()
-        # Si se apreta el generar csv -> Se inutiliza el boton de cerrar
-        # self.__cerrar_btn.configure(command=None)
+
+        # FALTA ACA GENERAR EL CSV, COMO? No se
+        self.master.gestor.tomar_boton_generar_csv()
 
 
 
@@ -116,7 +119,6 @@ class LlamadaSeleccionadaTopLevel(ctk.CTkToplevel):
 if __name__ == "__main__":
 
     # PRUEBA
-
     app = ctk.CTk()
     top_level = LlamadaSeleccionadaTopLevel(app)
     top_level.mostrar_datos_llamada("El flaquito", 

@@ -138,6 +138,12 @@ class GestorConsultaEncuesta:
         # Mensaje 13
         self.pantalla.solicitar_seleccion_llamada()
 
+    # Mensajes 35-37
+    def tomar_boton_generar_csv(self):
+       # Mensaje 38
+        self.generar_csv()
+        print("Se genera el CSV")
+
 
 
 
@@ -146,11 +152,6 @@ class GestorConsultaEncuesta:
     # Mensaje 3 (Me parece que no se implementa)
     def nueva_consulta_encuesta(self):
         pass
-
-
-
-
-
 
 
  
@@ -281,6 +282,11 @@ class GestorConsultaEncuesta:
             if datos_respuesta != False:
                 datos_respuesta_de_llamada.append(datos_respuesta)
         return datos_respuesta_de_llamada
+    
+
+    # Mensaje 38
+    def generar_csv(self):
+        pass
 
 
 

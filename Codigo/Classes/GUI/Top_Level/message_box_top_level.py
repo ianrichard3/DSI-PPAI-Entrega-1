@@ -15,6 +15,9 @@ class MessageBoxTopLevel(ctk.CTkToplevel):
 
         self.__boton = ctk.CTkButton(master=self)
 
+        # Si se aprieta la x
+        self.protocol("WM_DELETE_WINDOW", lambda: exit())
+
     def evento_boton(self):
         exit()
 
