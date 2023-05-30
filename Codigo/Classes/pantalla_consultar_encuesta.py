@@ -16,3 +16,5 @@ class Pantalla_consultar_encuesta:
     @property
     def lbl_fecha_inicio(self):
         return self.__fecha_inicio_periodo
+    
+

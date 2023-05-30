@@ -1,14 +1,20 @@
-import cliente as cliente_class
-import Estado.cambio_estado as cambio_estado
-import respuesta_de_cliente
+import os
+import sys
 from datetime import date
+
+this_file_path = os.path.dirname(__file__)
+sys.path.append(os.path.join(this_file_path, "../"))
+
+import Classes.cliente as cliente_class
+import Classes.Estado.cambio_estado as cambio_estado
+from Classes.respuesta_de_cliente import RespuestaDeCliente
 
 
 class Llamada:
     def __init__(self, descripcion_operador: str, detalle_accion: str,
-                 duracion: float, encuesta_enviada: bool, observacion_auditor: str, cliente: cliente_class.Cliente, primer_cambio_estado: cambio_estado.CambioEstado):
+                 encuesta_enviada: bool, observacion_auditor: str, cliente: cliente_class.Cliente, primer_cambio_estado: cambio_estado.CambioEstado):
         # Validaciones
-        assert duracion > 0.0, "La duracion debe ser mayor a cero"
+        # assert duracion > 0.0, "La duracion debe ser mayor a cero"
 
         # Atributos propios
 
@@ -16,7 +22,7 @@ class Llamada:
         self.__detalle_accion = detalle_accion
         self.__encuesta_enviada = encuesta_enviada
         self.__observacion_auditor = observacion_auditor
-        self.__duracion = duracion
+        self.__duracion = 0.0
 
         # Atributos referencia
         self.__respuestas_de_encuesta = []
@@ -122,7 +128,7 @@ class Llamada:
         return self.__respuestas_de_encuesta
     
     # Add respuesta de encuesta
-    def add_respuesta_encuesta(self, respuesta_encuesta: respuesta_de_cliente.RespuestaDeCliente):
+    def add_respuesta_encuesta(self, respuesta_encuesta: RespuestaDeCliente):
         self.__respuestas_de_encuesta.append(respuesta_encuesta)
 
     # Getter cambio_estado
@@ -137,12 +143,26 @@ class Llamada:
         self.__cambios_estado.append(cambio_estado)
 
 
+    # Metodos
+
+    def calcular_duracion(self):
+        fecha_hora_inicio_llamada = self.cambios_estado[0].fecha_hora_inicio
+        fecha_hora_fin_llamada = self.cambios_estado[-1].fecha_hora_inicio
+        duracion = fecha_hora_fin_llamada - fecha_hora_inicio_llamada 
+        return duracion
+    
+    def get_fecha_inicio(self):
+        primer_cambio_estado = self.cambios_estado[0]
+        fecha_inicio_llamada = primer_cambio_estado.fecha_hora_inicio.date()
+        return fecha_inicio_llamada
+
+    
     # Metodos de ejecucion de CU
 
     # mensaje 9
     def es_de_periodo(self, fecha_inicio_periodo: date, fecha_fin_periodo: date):
-        primer_cambio_estado = self.cambios_estado[0]
-        fecha_inicio_llamada = primer_cambio_estado.fecha_hora_inicio.date()
+        fecha_inicio_llamada = self.get_fecha_inicio()
+        # print(type(fecha_inicio_llamada))
         if fecha_inicio_periodo < fecha_inicio_llamada < fecha_fin_periodo:
             print(f"Llamada en periodo!")
             return True
@@ -166,3 +186,9 @@ class Llamada:
         ultimo_cambio_estado = self.cambios_estado[-1]  
         # Mensaje 22
         return ultimo_cambio_estado.get_nombre_estado()
+    
+
+
+
+if __name__ == "__main__":
+    pass

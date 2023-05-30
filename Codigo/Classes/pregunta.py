@@ -1,4 +1,10 @@
-import respuesta_posible
+import os
+import sys
+
+this_file_path = os.path.dirname(__file__)
+sys.path.append(os.path.join(this_file_path, "../"))
+
+from Classes.respuesta_posible import RespuestaPosible
 
 class Pregunta:
     def __init__(self, pregunta: str):
@@ -34,7 +40,7 @@ class Pregunta:
         return self.__respuestas
 
     # Add respuesta posible
-    def add_respuesta(self, respuesta: respuesta_posible.RespuestaPosible):
+    def add_respuesta(self, respuesta: RespuestaPosible):
         self.__respuestas.append(respuesta)
 
     
@@ -52,3 +58,6 @@ class Pregunta:
         return descripciones_respuestas
 
 
+
+if __name__ == "__main__":
+    pass

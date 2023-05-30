@@ -7,24 +7,25 @@
 # CADA INSTANCIA DE CADA CLASE DEBE SER CREADA EN EL ARCHIVO DE LA CLASE CORRESPONDIENTE, 
 # ASI CUANDO IMPORTEMOS CADA MODULO, SE IMPORTA LA CLASE Y LOS OBJETOS, EN ESTE CASO DE PRUEBA
 
-
-from llamada import Llamada
-from cliente import Cliente
-from Estado.cambio_estado import CambioEstado
-from Estado.estado import Estado
-from respuesta_de_cliente import RespuestaDeCliente
-from respuesta_posible import RespuestaPosible
-from encuesta import Encuesta
-from pregunta import Pregunta
-from gestor_consulta_encuesta import GestorConsultaEncuesta
-
 from datetime import date, datetime
 import sys
+import os
 
-
-sys.path.append("../Codigo")
+this_file_path = os.path.dirname(__file__)
+sys.path.append(os.path.join(this_file_path, "../"))
 from Support.funciones_soporte import from_string_to_date
 
+from Classes.llamada import Llamada
+from Classes.cliente import Cliente
+from Classes.Estado.cambio_estado import CambioEstado
+from Classes.Estado.estado import Estado
+from Classes.respuesta_de_cliente import RespuestaDeCliente
+from Classes.respuesta_posible import RespuestaPosible
+from Classes.encuesta import Encuesta
+from Classes.pregunta import Pregunta
+from Classes.gestor_consulta_encuesta import GestorConsultaEncuesta
+from Classes.GUI.pantalla_consultar_encuesta import PantallaConsultarEncuesta
+from Datos.datos import llamadas
 
 
 
@@ -187,7 +188,7 @@ print(datos_llamada.get("estado_actual"))
 print(datos_llamada.get("cliente"))
 
 """ 
-
+"""
 
 
 # Prueba 16 - 33
@@ -288,5 +289,86 @@ print(datos_llamada.get("duracion"))
 print(datos_llamada.get("estado_actual"))
 print(datos_llamada.get("cliente"))
 print(datos_llamada.get("datos_encuesta"))
+
+
+"""
+# d1 = datetime(2000, 5, 10, 13)
+# d2 = datetime(2000, 5, 10, 15)
+# print(d2-d1)
+
+
+
+
+gestor1 = GestorConsultaEncuesta()
+pantalla1 = PantallaConsultarEncuesta()
+
+
+gestor1.pantalla = pantalla1
+pantalla1.gestor = gestor1
+
+# estado_iniciado = Estado("Inicializado")
+# estado_finalizado = Estado("Finalizado")
+# cambioestado1 = CambioEstado(datetime(2022,5,3,13), estado_iniciado)
+# cambioestado2 = CambioEstado(datetime(2022,5,3,16), estado_finalizado)
+# cliente1 = Cliente("23456789", "María Rodríguez", "3672345678")
+# llamada1 = Llamada("Operador2", "Denunciar robo", False, "ConObservacion", cliente1, cambioestado1)
+# llamada1.add_cambio_estado(cambioestado2)
+# rta1 = RespuestaDeCliente(date(2020,4,5), RespuestaPosible("messi", "2"))
+# llamada1.add_respuesta_encuesta(rta1)
+# llamada1.add_respuesta_encuesta()
+# print(llamada1.get_fecha_inicio())
+for llamda in llamadas:
+    gestor1.add_llamada(llamda)
+
+
+
+gestor1.fecha_inicio_periodo = date(2021,5,3)
+gestor1.fecha_fin_periodo = date(2023,5,3)
+
+# print(gestor1.buscar_llamadas_en_periodo())
+
+# pantalla.__gestor = gestor
+# gestor.__pantalla = pantalla
+
+
+
+pantalla1.habilitar_ventana()
+
+
+
+{
+        "descripcionOperador": "Operador2",
+        "detalleAccionRequerida": "Denunciar robo",
+        "duracion" : 3.5,
+        "encuestaEnviada": False,
+        "observacionAuditor": "ConObservacion",
+        "cambios de estado": [
+            {
+                "Cambio Estado1": "PrimerEstado",
+                "Estado": "Inicializado"
+            },
+            {
+                "Cambio Estado2": "SegundoEstado",
+                "Estado": "Finalizado"
+            }
+        ],
+        "cliente": {
+            "dni": 23456789,
+            "nombreCompleto": "María Rodríguez",
+            "nroCelular": 367-234-5678
+
+        },
+        "respuestas de Clientes":[
+            {
+                "fechaEncuesta": "10/02/2022",
+                "respuestaSeleccionada": "Si, se soluciono.",
+                
+            },
+            {
+                "fechaEncuesta": "09/05/2022",
+                "respuestaSeleccionada": "No, no se soluciono.",
+            }
+        ]
+    },
 
 

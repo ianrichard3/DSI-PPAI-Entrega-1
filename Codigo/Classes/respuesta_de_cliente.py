@@ -1,8 +1,15 @@
-import respuesta_posible
+import os
+import sys
 from datetime import date
 
+this_file_path = os.path.dirname(__file__)
+sys.path.append(os.path.join(this_file_path, "../"))
+
+from Classes.respuesta_posible import RespuestaPosible
+
+
 class RespuestaDeCliente:
-    def __init__(self, fecha_encuesta: date, respuesta_seleccionada: respuesta_posible.RespuestaPosible):
+    def __init__(self, fecha_encuesta: date, respuesta_seleccionada: RespuestaPosible):
         # Atributos propios
         self.__fecha_encuesta = fecha_encuesta
 

@@ -16,3 +16,8 @@ class Estado:
             raise Exception("Muy largo")
         else:
             self.__nombre = value
+
+
+
+if __name__ == "__main__":
+    pass

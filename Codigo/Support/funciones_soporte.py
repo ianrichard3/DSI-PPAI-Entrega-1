@@ -17,6 +17,9 @@ def from_date_to_string(date_value: date, date_format: str = "%d/%m/%Y"):
     return date_value.strftime(date_format)
 
 
+
+if __name__ == "__main__":
+    pass
 # d1 = date(year=1999, month=2, day=23)
 # d2 = date(year=2003, month=7, day=21)
 

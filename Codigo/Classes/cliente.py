@@ -52,3 +52,6 @@ class Cliente:
             raise Exception("Muy largo")
         else:
             self.__nro_celular = value
+
+if __name__ == "__main__":
+    pass

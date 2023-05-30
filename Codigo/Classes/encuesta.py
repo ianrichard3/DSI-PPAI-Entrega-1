@@ -1,5 +1,12 @@
-import pregunta
+import os
+import sys
 from datetime import date
+
+this_file_path = os.path.dirname(__file__)
+sys.path.append(os.path.join(this_file_path, "../"))
+
+import Classes.pregunta as pregunta
+
 
 class Encuesta:
     def __init__(self, descripcion: str, fecha_fin_vigencia: date):
@@ -93,3 +100,9 @@ class Encuesta:
     # Mensaje 30
     def buscar_preguntas(self):
         return self.preguntas
+    
+
+
+
+if __name__ == "__main__":
+    pass

@@ -1,5 +1,11 @@
-from Estado.estado import Estado
+import os
+import sys
 from datetime import datetime, date
+
+this_file_path = os.path.dirname(__file__)
+sys.path.append(os.path.join(this_file_path, ".../"))
+
+from Classes.Estado.estado import Estado
 
 
 class CambioEstado:
@@ -45,3 +51,7 @@ class CambioEstado:
     def get_nombre_estado(self):
         # Mensaje 23
         return self.estado.nombre
+
+
+if __name__ == "__main__":
+    pass

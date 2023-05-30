@@ -1,16 +1,25 @@
 import sys
+import os
 from datetime import date, datetime
-from llamada import Llamada
-from encuesta import Encuesta
 
-sys.path.append("../Codigo")
+this_file_path = os.path.dirname(__file__)
+sys.path.append(os.path.join(this_file_path, "../"))
+
+from Classes.llamada import Llamada
+from Classes.encuesta import Encuesta
 from Support.funciones_soporte import from_string_to_date
+
 
 
 class GestorConsultaEncuesta:
     # def __init__(self, fecha_inicio_periodo: date, fecha_fin_periodo: date, llamada_seleccionada: llamada.Llamada,
     #               tipo_salida_consulta_seleccionada: str):
     def __init__(self):
+
+        # Pantalla
+        self.__pantalla = None
+
+
         self.__fecha_inicio_periodo = None
         self.__fecha_fin_periodo = None
         self.__llamada_seleccionada = None
@@ -93,11 +102,57 @@ class GestorConsultaEncuesta:
     def add_encuesta(self, nueva_encuesta: Encuesta):
         # Executes this code when object.att = value
         self.__encuestas.append(nueva_encuesta)
+
+
+    # Getter y Setter Pantalla
+    @property
+    def pantalla(self):
+        return self.__pantalla
+    @pantalla.setter
+    def pantalla(self, value):
+        self.__pantalla = value
     
 
 
 
     # Metodos de ejecucion de CU
+
+    # Mensaje 3
+    def nueva_consulta_encuesta(self):
+        # Mensaje 4 al 7
+        # self.__pantalla.solicitar_periodo()
+        # Mensaje 8
+        
+        llamadas_en_periodo_con_respuesta = self.buscar_llamadas_en_periodo()
+        print("Llamadas encontradas!!")
+        # Mensaje 12
+        self.pantalla.mostrar_llamadas_con_rta(llamadas_en_periodo_con_respuesta)
+
+
+    def tomar_boton_buscar(self):
+        self.pantalla.solicitar_periodo()
+
+
+    def buscar_llamadas(self):
+        llamadas_en_periodo_con_respuesta = self.buscar_llamadas_en_periodo()
+        print("Llamadas encontradas!!")
+        # Mensaje 12
+        self.pantalla.mostrar_llamadas_con_rta(llamadas_en_periodo_con_respuesta)
+
+
+    # Mensaje 7
+    def tomar_periodo(self, fecha_inicio, fecha_fin):
+        """
+        Toma por medio de la pantalla la fecha
+        de Inicio del periodo y la fecha fin
+        """
+        print("Se toma periodo")
+        fecha_inicio_date = from_string_to_date(fecha_inicio, "%m/%d/%y")
+        fecha_fin_date = from_string_to_date(fecha_fin, "%m/%d/%y")
+        self.fecha_inicio_periodo = fecha_inicio_date
+        self.fecha_fin_periodo = fecha_fin_date
+
+
 
     # Mensaje 8
     def buscar_llamadas_en_periodo(self):
@@ -115,7 +170,8 @@ class GestorConsultaEncuesta:
             # Ejecutamos dos metodos de llamada y le pasamos por parametro los atributos de gestor (fechas periodo: formato date)
             if llamada.es_de_periodo(self.fecha_inicio_periodo, self.fecha_fin_periodo) and llamada.tiene_respuesta_encuesta():
                 # print("llamada en periodo y con respuesta")
-                llamadas_en_periodo_con_respuesta.append(llamada)
+                datos_llamada = {"operador": llamada.descripcion_operador, "fecha": llamada.get_fecha_inicio()}
+                llamadas_en_periodo_con_respuesta.append(datos_llamada)
 
         return llamadas_en_periodo_con_respuesta
     
@@ -128,7 +184,7 @@ class GestorConsultaEncuesta:
         # Mensaje 19
         nombre_estado_actual = self.buscar_ultimo_estado_llamada()
         # Mensaje 23.2
-        duracion_llamada = self.llamada_seleccionada.duracion
+        duracion_llamada = self.llamada_seleccionada.calcular_duracion()
         # Mensaje 24
         datos_encuestas_por_respuesta_cliente = self.buscar_encuesta_de_respuesta()
 
@@ -235,3 +291,6 @@ for llamada_found in filtro:
 
 """
 
+
+if __name__ == "__main__":
+    pass
