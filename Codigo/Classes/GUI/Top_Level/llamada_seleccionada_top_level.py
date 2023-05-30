@@ -1,9 +1,13 @@
 import customtkinter as ctk
 import tkinter as tk
+import sys
+import os
 
 
 # importar message_box_TL
-
+this_file_path = os.path.dirname(__file__)
+sys.path.append(os.path.join(this_file_path, "./"))
+# print(os.path.join(this_file_path, "..../"))
 from message_box_top_level import MessageBoxTopLevel
 
 
@@ -29,6 +33,9 @@ class LlamadaSeleccionadaTopLevel(ctk.CTkToplevel):
         
         # Datos de la encuesta
         self.__datos_encuesta_lbl = ctk.CTkLabel(master=self)
+
+        # Titulo preguntas
+        self.__preguntas_lbl = ctk.CTkLabel(master=self, text="Preguntas", font=("Helvetica", 20))
 
         # Datos Preguntas
         self.__pregunta1_lbl = ctk.CTkLabel(master=self)
@@ -72,29 +79,32 @@ class LlamadaSeleccionadaTopLevel(ctk.CTkToplevel):
         self.__llamada_seleccionada_lbl.grid(padx=15, pady=15, row=0, column=0, columnspan=2)
 
         # cliente-llamada-encuesta
-        self.__nombre_cliente_lbl.configure(text=nombre_cliente, font=("Helvetica", 15), wraplength=200)
-        self.__datos_llamada_lbl.configure(text=datos_llamada, font=("Helvetica", 15), wraplength=200)
-        self.__datos_encuesta_lbl.configure(text=datos_encuesta, font=("Helvetica", 15), wraplength=200)
+        self.__nombre_cliente_lbl.configure(text=nombre_cliente, font=("Helvetica", 15), wraplength=500)
+        self.__datos_llamada_lbl.configure(text=datos_llamada, font=("Helvetica", 15), wraplength=500)
+        self.__datos_encuesta_lbl.configure(text=datos_encuesta, font=("Helvetica", 15), wraplength=500)
         # grid
-        self.__nombre_cliente_lbl.grid(padx=15, pady=15, row=1, column=0)
-        self.__datos_llamada_lbl.grid(padx=15, pady=15, row=2, column=0)
-        self.__datos_encuesta_lbl.grid(padx=15, pady=15, row=3, column=0)
+        self.__nombre_cliente_lbl.grid(padx=15, pady=15, row=1, column=0, columnspan=2)
+        self.__datos_llamada_lbl.grid(padx=15, pady=15, row=2, column=0, columnspan=2)
+        self.__datos_encuesta_lbl.grid(padx=15, pady=15, row=3, column=0, columnspan=2)
+
+        # Titulo preguntas grid
+        self.__preguntas_lbl.grid(padx=15, pady=15, row=4, column=0, columnspan=2)
 
         # Preguntas
-        self.__pregunta1_lbl.configure(text=preguntas[0], font=("Helvetica", 15), wraplength=200)
-        self.__pregunta2_lbl.configure(text=preguntas[1], font=("Helvetica", 15), wraplength=200)
+        self.__pregunta1_lbl.configure(text=preguntas[0], font=("Helvetica", 15), wraplength=500)
+        self.__pregunta2_lbl.configure(text=preguntas[1], font=("Helvetica", 15), wraplength=500)
         # grid
-        self.__pregunta1_lbl.grid(padx=15, pady=15, row=4, column=0)
-        self.__pregunta2_lbl.grid(padx=15, pady=15, row=5, column=0)
+        self.__pregunta1_lbl.grid(padx=15, pady=15, row=5, column=0, columnspan=2)
+        self.__pregunta2_lbl.grid(padx=15, pady=15, row=6, column=0, columnspan=2)
 
         if len(preguntas) > 2:
-            self.__pregunta3_lbl.configure(text=preguntas[2], font=("Helvetica", 15), wraplength=200)
+            self.__pregunta3_lbl.configure(text=preguntas[2], font=("Helvetica", 15), wraplength=500)
             # grid
-            self.__pregunta3_lbl.grid(padx=15, pady=15, row=6, column=0)
+            self.__pregunta3_lbl.grid(padx=15, pady=15, row=7, column=0, columnspan=2)
 
         # Botones
-        self.__cerrar_btn.grid(padx=15, pady=15, row=7, column=0)
-        self.__generar_csv_btn.grid(padx=15, pady=15, row=7, column=1)
+        self.__cerrar_btn.grid(padx=15, pady=15, row=8, column=0)
+        self.__generar_csv_btn.grid(padx=15, pady=15, row=8, column=1)
 
 
 
@@ -109,7 +119,10 @@ if __name__ == "__main__":
 
     app = ctk.CTk()
     top_level = LlamadaSeleccionadaTopLevel(app)
-    top_level.mostrar_datos_llamada("El flaquito", "Estado: Inciado   \nDuracion: 3.2 minutos", "Encuesta: Encuesta 1", ["Como estas? Bien", "Muy mal? Si"])
+    top_level.mostrar_datos_llamada("El flaquito", 
+                                    "Estado: Inciado   \nDuracion: 3.2 minutos", 
+                                    "Encuesta: Encuesta 1", 
+                                    ["Como estas? Bien", "Muy mal? Si"])
 
 
 

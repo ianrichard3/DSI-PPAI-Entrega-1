@@ -13,8 +13,12 @@ this_file_path = os.path.dirname(__file__)
 # sys.path.append(os.path.join(this_file_path, "..\\"))
 sys.path.append(os.path.join(this_file_path, ".../"))
 
+from Classes.GUI.Top_Level.llamada_seleccionada_top_level import LlamadaSeleccionadaTopLevel
+
 # from gestor_consulta_encuesta import GestorConsultaEncuesta
 from Support.funciones_soporte import from_string_to_date
+from Support.funciones_soporte import from_call_dictionary_to_string
+# from Support.funciones_soporte import from_call_string_get_call_object
 
 # Constantes
 
@@ -58,6 +62,8 @@ class PantallaConsultarEncuesta(ctk.CTk):
         self.grid_columnconfigure(2, weight=1)
         self.grid_columnconfigure(3, weight=1)
 
+        # Lista llamadas encontradas
+        self.__lista_llamadas = None
 
         # Gestor Asociado
         self.__gestor = None
@@ -75,7 +81,7 @@ class PantallaConsultarEncuesta(ctk.CTk):
         # Botones
 
         self.__comenzar_busqueda_btn = ctk.CTkButton(master=self, text="Buscar", font=(FUENTE, 23), command=self.evento_boton_buscar)
-        self.__seleccionar_llamada_btn = ctk.CTkButton(master=self, text="Seleccionar", font=(FUENTE, 23))
+        self.__seleccionar_llamada_btn = ctk.CTkButton(master=self, text="Seleccionar", font=(FUENTE, 23), command=self.evento_boton_seleccionar)
 
         # Combo Box
         self.__llamadas_encontradas_combo = ctk.CTkComboBox(master=self, values=[],
@@ -109,6 +115,16 @@ class PantallaConsultarEncuesta(ctk.CTk):
     def gestor(self, value):
         self.__gestor = value
 
+    # lista llamadas encontradas
+    @property
+    def lista_llamadas(self):
+        return self.__lista_llamadas
+    
+    @lista_llamadas.setter
+    def lista_llamadas(self, value):
+        self.__lista_llamadas = value
+
+
 
     # METODOS
 
@@ -140,6 +156,9 @@ class PantallaConsultarEncuesta(ctk.CTk):
         # self.__gestor.tomar_periodo()
         # self.gestor.periodo_tomado()
 
+    def evento_boton_seleccionar(self):
+        self.gestor.tomar_boton_seleccionar()
+
 
 
 
@@ -158,18 +177,57 @@ class PantallaConsultarEncuesta(ctk.CTk):
     def solicitar_periodo(self):
         fecha_inicio = self.__fecha_inicio_date_entry.get()
         fecha_fin = self.__fecha_fin_date_entry.get()
+        # Mensaje 7
         self.gestor.tomar_periodo(fecha_inicio, fecha_fin)
-        self.gestor.buscar_llamadas()
+        # Mensaje previo al 8
+        self.gestor.buscar_mostrar_llamadas()
     
     # Mensaje 12 y Mensaje 13
     def mostrar_llamadas_con_rta(self, lista_llamadas):
-        print("llamadas mostradas")
+        # print("llamadas mostradas")
         print(lista_llamadas)
+        self.lista_llamadas = lista_llamadas
         # Actualizar la combo box de la lista de las llamadas
         if lista_llamadas:
-            lista_a_mostrar = [str(l) for l in lista_llamadas]
+            lista_a_mostrar = [from_call_dictionary_to_string(l) for l in lista_llamadas]
             self.__llamadas_encontradas_combo.configure(values=lista_a_mostrar)
             self.__llamadas_encontradas_combo.set(lista_a_mostrar[0])
+
+    # Mensaje 13
+    def solicitar_seleccion_llamada(self):
+        llamada_seleccionada_string = self.__llamadas_encontradas_combo.get()
+        # Mensaje 15
+        self.gestor.tomar_seleccion_llamada(llamada_seleccionada_string)
+        # Mensaje disparador del 16
+        self.gestor.buscar_mostrar_datos_llamada()
+
+    # Mensaje 34
+    def mostrar_datos_llamada(self, datos_llamada):
+        # Crear top level
+        datos_llamada_toplevel = LlamadaSeleccionadaTopLevel(self)
+
+        # Hacer bonitos los datos
+        cliente = datos_llamada.get("cliente")
+        estado_actual = datos_llamada.get("estado_actual")
+        duracion = datos_llamada.get("duracion")
+        preguntas = datos_llamada.get("datos_encuesta")
+        encuesta = preguntas[0].get("encuesta")
+
+        cliente = f"Nombre de cliente:    {cliente}"
+        estado_actual_duracion = f"Estado actual: {estado_actual}\nDuracion: {duracion} minutos"
+        encuesta = f"Encuesta: {encuesta}"
+        preguntas = [ "Pregunta: " 
+                     + str(l.get("pregunta")) 
+                     + "\nRespuesta: "
+                     + str(l.get("respuesta")) for l in preguntas]
+        # print(preguntas)
+
+        # Mostrar datos en top level
+        datos_llamada_toplevel.mostrar_datos_llamada(cliente, estado_actual_duracion,
+                                                     encuesta, preguntas)
+        # Minimizar ventana actual (la del periodo)
+        self.withdraw()
+        
 
 
 

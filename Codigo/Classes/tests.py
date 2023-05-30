@@ -25,7 +25,7 @@ from Classes.encuesta import Encuesta
 from Classes.pregunta import Pregunta
 from Classes.gestor_consulta_encuesta import GestorConsultaEncuesta
 from Classes.GUI.pantalla_consultar_encuesta import PantallaConsultarEncuesta
-from Datos.datos import llamadas
+import Datos.datos as datos
 
 
 
@@ -188,101 +188,30 @@ print(datos_llamada.get("estado_actual"))
 print(datos_llamada.get("cliente"))
 
 """ 
-"""
+
 
 
 # Prueba 16 - 33
 
 
-# Ejemplos encuestas
-
-fecha_fin_vigencia = date(2010, 4, 21)
-
-# pregunta 1
-pregunta1_encuesta1 = Pregunta("Te gusto?")
-rta1_pregunta1_encuesta1 = RespuestaPosible("Si", "Si")
-rta2_pregunta1_encuesta1 = RespuestaPosible("No", "No")
-pregunta1_encuesta1.add_respuesta(rta1_pregunta1_encuesta1)
-pregunta1_encuesta1.add_respuesta(rta2_pregunta1_encuesta1)
-
-# pregunta 2
-
-pregunta2_encuesta1 = Pregunta("Reseña de llamada:")
-rta1_pregunta2_encuesta1 = RespuestaPosible("Buena", "Buena")
-rta2_pregunta2_encuesta1 = RespuestaPosible("Mala", "Mala")
-rta3_pregunta2_encuesta1 = RespuestaPosible("Muy buena", "Muy buena")
-rta4_pregunta2_encuesta1 = RespuestaPosible("Muy mala", "Muy mala")
-pregunta2_encuesta1.add_respuesta(rta1_pregunta2_encuesta1)
-pregunta2_encuesta1.add_respuesta(rta2_pregunta2_encuesta1)
-pregunta2_encuesta1.add_respuesta(rta3_pregunta2_encuesta1)
-pregunta2_encuesta1.add_respuesta(rta4_pregunta2_encuesta1)
-
-# pregunta 3 (p 1 encuesta 2)
-pregunta1_encuesta2 = Pregunta("Como andas amigo")
-rta1_pregunta3_encuesta1 = RespuestaPosible("Bien", "Bien")
-rta2_pregunta3_encuesta1 = RespuestaPosible("Mal", "Mal")
-pregunta1_encuesta2.add_respuesta(rta1_pregunta3_encuesta1)
-pregunta1_encuesta2.add_respuesta(rta2_pregunta3_encuesta1)
-
-
-
-# ENCUESTAS
-
-encuesta1 = Encuesta("Encuesta numero 1", fecha_fin_vigencia)
-encuesta1.add_pregunta(pregunta1_encuesta1)
-encuesta1.add_pregunta(pregunta2_encuesta1)
-
-encuesta2 = Encuesta("Encuesta numero 2", fecha_fin_vigencia)
-encuesta2.add_pregunta(pregunta1_encuesta2)
-
-
-
-# Fechas cambio estado
-
-fecha_hora_inicio_ce1 = datetime(2023, 2, 14, 14, 34, 2)     # 14/2/23  14:34:02
-fecha_hora_inicio_ce2 = datetime(2023, 3, 14, 16, 34, 2)     # 14/3/23  16:34:02
-fecha_hora_inicio_ce3 = datetime(2023, 1, 20, 11, 34, 2)     # 20/1/23  11:34:02
-
-
-# Objetos estado
-estado_finalizado = Estado("Finalizado")
-estado_pendiente = Estado("Pendiente")
-estado_creado = Estado("Creado")
-
-# Objetos cambio de estado
-cambio_estado_1 = CambioEstado(fecha_hora_inicio_ce1, estado_creado)
-cambio_estado_2 = CambioEstado(fecha_hora_inicio_ce2, estado_pendiente)
-cambio_estado_3 = CambioEstado(fecha_hora_inicio_ce3, estado_finalizado)
 
 
 
 
 
 
-# datos llamada
-cliente1 = Cliente("23453432", "Humberto Primo", "3513433777")
-estado_iniciado = Estado("Iniciado")
-cambio_estado_1 = CambioEstado(datetime(2001, 4, 12, 18, 14, 20), estado_iniciado) 
-llamada1 = Llamada("Flaquito 1", "Llama profesional", 3.3, True, "Completada", cliente1, cambio_estado_1)
-r_cliente1 = RespuestaDeCliente(datetime(2001, 4, 12, 18, 34, 20), rta1_pregunta2_encuesta1)
-r_cliente2 = RespuestaDeCliente(datetime(2001, 4, 12, 18, 34, 20), rta1_pregunta3_encuesta1)
-r_cliente3 = RespuestaDeCliente(datetime(2001, 4, 12, 18, 34, 20), rta4_pregunta2_encuesta1)
 
 
-llamada1.add_respuesta_encuesta(r_cliente1)
-llamada1.add_respuesta_encuesta(r_cliente2)
-llamada1.add_respuesta_encuesta(r_cliente3)
-llamada1.add_cambio_estado(cambio_estado_2)
-llamada1.add_cambio_estado(cambio_estado_3)
-
-
+"""
 
 # Objeto de Gestor
 gestor = GestorConsultaEncuesta()
-gestor.add_llamada(llamada1)
-gestor.llamada_seleccionada = llamada1
-gestor.add_encuesta(encuesta1)
-gestor.add_encuesta(encuesta2)
+for l in datos.llamadas:
+    gestor.add_llamada(l)
+for e in datos.encuestas:
+    gestor.add_encuesta(e)
+
+gestor.llamada_seleccionada = datos.llamadas[1]
 
 datos_llamada = gestor.buscar_datos_llamada()
 print(datos_llamada.get("duracion"))
@@ -290,12 +219,12 @@ print(datos_llamada.get("estado_actual"))
 print(datos_llamada.get("cliente"))
 print(datos_llamada.get("datos_encuesta"))
 
-
 """
-# d1 = datetime(2000, 5, 10, 13)
-# d2 = datetime(2000, 5, 10, 15)
-# print(d2-d1)
 
+
+
+
+# TEST PANTALLA Y GESTOR
 
 
 
@@ -306,69 +235,20 @@ pantalla1 = PantallaConsultarEncuesta()
 gestor1.pantalla = pantalla1
 pantalla1.gestor = gestor1
 
-# estado_iniciado = Estado("Inicializado")
-# estado_finalizado = Estado("Finalizado")
-# cambioestado1 = CambioEstado(datetime(2022,5,3,13), estado_iniciado)
-# cambioestado2 = CambioEstado(datetime(2022,5,3,16), estado_finalizado)
-# cliente1 = Cliente("23456789", "María Rodríguez", "3672345678")
-# llamada1 = Llamada("Operador2", "Denunciar robo", False, "ConObservacion", cliente1, cambioestado1)
-# llamada1.add_cambio_estado(cambioestado2)
-# rta1 = RespuestaDeCliente(date(2020,4,5), RespuestaPosible("messi", "2"))
-# llamada1.add_respuesta_encuesta(rta1)
-# llamada1.add_respuesta_encuesta()
-# print(llamada1.get_fecha_inicio())
-for llamda in llamadas:
+for llamda in datos.llamadas:
     gestor1.add_llamada(llamda)
-
+for e in datos.encuestas:
+    gestor1.add_encuesta(e)
 
 
 gestor1.fecha_inicio_periodo = date(2021,5,3)
 gestor1.fecha_fin_periodo = date(2023,5,3)
 
-# print(gestor1.buscar_llamadas_en_periodo())
-
-# pantalla.__gestor = gestor
-# gestor.__pantalla = pantalla
-
-
-
 pantalla1.habilitar_ventana()
 
+# FALTA AGREGAR BOTONES DE CANCELACION
+
+"""
 
 
-{
-        "descripcionOperador": "Operador2",
-        "detalleAccionRequerida": "Denunciar robo",
-        "duracion" : 3.5,
-        "encuestaEnviada": False,
-        "observacionAuditor": "ConObservacion",
-        "cambios de estado": [
-            {
-                "Cambio Estado1": "PrimerEstado",
-                "Estado": "Inicializado"
-            },
-            {
-                "Cambio Estado2": "SegundoEstado",
-                "Estado": "Finalizado"
-            }
-        ],
-        "cliente": {
-            "dni": 23456789,
-            "nombreCompleto": "María Rodríguez",
-            "nroCelular": 367-234-5678
-
-        },
-        "respuestas de Clientes":[
-            {
-                "fechaEncuesta": "10/02/2022",
-                "respuestaSeleccionada": "Si, se soluciono.",
-                
-            },
-            {
-                "fechaEncuesta": "09/05/2022",
-                "respuestaSeleccionada": "No, no se soluciono.",
-            }
-        ]
-    },
-
-
+"""

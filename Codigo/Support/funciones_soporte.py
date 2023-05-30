@@ -17,9 +17,32 @@ def from_date_to_string(date_value: date, date_format: str = "%d/%m/%Y"):
     return date_value.strftime(date_format)
 
 
+def from_call_dictionary_to_string(dictionary):
+    operador = dictionary.get("operador")
+    fecha = from_date_to_string(dictionary.get("fecha"))
+    string = f"Operador: {operador}".ljust(30) + f"Fecha: {fecha}"
+    return string
+
+
+# def from_call_string_get_call_object(string, calls):
+#     for c in calls:
+#         dic = {"operador": c.descripcion_operador,
+#          "fecha": c.get_fecha_inicio()}
+#         if from_call_dictionary_to_string(dic) == string:
+#             return c
+#     return False
+    
+
+
+
+
+
+
+
 
 if __name__ == "__main__":
-    pass
+    d = {'operador': 'Operador2', 'fecha': date(2022, 5, 3)}
+    print(from_call_dictionary_to_string(d))
 # d1 = date(year=1999, month=2, day=23)
 # d2 = date(year=2003, month=7, day=21)
 

@@ -43,7 +43,7 @@ def crear_llamada(fecha_hora_ce1, fecha_hora_ce2, dni, nombre, nro, operador,
 # llamada 1
 llamadas.append(crear_llamada(datetime(2022,5,3,13), datetime(2022,5,3,16),
               "23456789", "María Rodríguez", "3672345678",
-              "Operador2", "Denunciar robo", False, "ConObservacion",
+              "Operador2", "Denunciar robo", True, "ConObservacion",
               [(date(2020,4,5), RespuestaPosible("Si", "1")),
                (date(2022,4,5), RespuestaPosible("Bien", "2"))]))
 
@@ -51,16 +51,16 @@ llamadas.append(crear_llamada(datetime(2022,5,3,13), datetime(2022,5,3,16),
 
 # llamada 2
 llamadas.append(crear_llamada(datetime(2017,3,8,13), datetime(2017,2,5,16),
-              "12345678", "Juan Perezs", "5551234567",
+              "12345678", "Juan Perez", "5551234567",
               "Operador1", "Comunicar Saldo", True, "SinObservacion",
-              [(date(2020,4,5), RespuestaPosible("No, no se soluciono", "2")),
+              [(date(2020,4,5), RespuestaPosible("No, no se solucionó", "2")),
                (date(2022,4,5), RespuestaPosible("Insatisfecho", "2")),
                (date(2017,5,5), RespuestaPosible("No, no lo recomendaría", "2"))]))
 
 
 # llamada 3
 llamadas.append(crear_llamada(datetime(2022,8,5,23), datetime(2021,9,5,15),
-              "34567890", "Carlos González", "576-345-6789",
+              "34567890", "Carlos González", "5763456789",
               "Operador3", "Dar baja tarjeta", True, "SinObservacion",
               [(date(2020,4,5), RespuestaPosible("Si", "1")),
                (date(2022,4,5), RespuestaPosible("Bien", "2"))]))
@@ -68,10 +68,10 @@ llamadas.append(crear_llamada(datetime(2022,8,5,23), datetime(2021,9,5,15),
 
 # llamada 4
 llamadas.append(crear_llamada(datetime(2013,3,6,13), datetime(2013,2,5,16),
-              "23456789", "Juan Cruz", "3541-23-7683",
+              "23456789", "Juan Cruz", "3541237683",
               "Operador1", "Comunicar Saldo", True, "ConObservacion",
-              [(date(2017,3,5), RespuestaPosible("Si", "2")),
-               (date(2017,4,5), RespuestaPosible("Bien", "2"))]))
+              [(date(2017,3,5), RespuestaPosible("Regular", "3")),
+               (date(2017,4,5), RespuestaPosible("Si, si lo recomendaría", "2"))]))
 
 #Fin de la creacion del listado de llamadas
 
@@ -98,8 +98,8 @@ encuestas = []
 # Encuesta 1
 
 p1 = crear_pregunta("¿Se soluciono su problema?", 
-                    [("Si se soluciono", "1"),
-                     ("No se soluciono", "2")])
+                    [("Si, Si se soluciono", "1"),
+                     ("No, No se soluciono", "2")])
 
 p2 = crear_pregunta("¿Como califica al representante que atendio su consulta?", 
                     [("Mal", "1"),
@@ -117,7 +117,7 @@ encuestas.append(crear_encuesta(
 
 
 
-# Encuestas 2
+# Encuesta 2
 
 p1 = crear_pregunta("¿Que tal ha sido la atencion proporcionada?", 
                     [("Muy mala", "1"),
@@ -130,6 +130,33 @@ p1 = crear_pregunta("¿Que tal ha sido la atencion proporcionada?",
 p2 = crear_pregunta("¿Recomendaría nuestro servicio a otras personas?", 
                     [("Si, lo recomendaría", "1"),
                      ("No, no lo recomendaría", "2")])
+
+
+
+
+encuestas.append(crear_encuesta(
+    "Atención al Cliente", "08/12/2025", [p1, p2]
+))
+
+
+
+# Encuesta 3
+
+
+p1 = crear_pregunta("¿Que tan satisfecho quedó después de la llamada?", 
+                    [("Muy insatisfecho", "1"),
+                     ("Insatisfecho", "2"),
+                     ("Regular", "3"),
+                     ("Satisfecho", "4"),
+                     ("Muy Satisfecho", "5")
+                     ])
+
+p2 = crear_pregunta("¿Se logró solucionar su problema?", 
+                    [("Si, se solucionó", "1"),
+                     ("No, no se solucionó", "2")])
+
+
+
 
 encuestas.append(crear_encuesta(
     "Atención al Cliente", "08/12/2025", [p1, p2]

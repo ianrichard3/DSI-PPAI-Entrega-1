@@ -8,6 +8,7 @@ sys.path.append(os.path.join(this_file_path, "../"))
 from Classes.llamada import Llamada
 from Classes.encuesta import Encuesta
 from Support.funciones_soporte import from_string_to_date
+from Support.funciones_soporte import from_call_dictionary_to_string
 
 
 
@@ -27,6 +28,8 @@ class GestorConsultaEncuesta:
 
         self.__llamadas = []
         self.__encuestas = []
+
+        self.__llamadas_encontradas = []
 
     # -------------------
     # Getters & Setters -
@@ -111,33 +114,46 @@ class GestorConsultaEncuesta:
     @pantalla.setter
     def pantalla(self, value):
         self.__pantalla = value
+
+    # Getter y Setter llamadas encontradas
+    @property
+    def llamadas_encontradas(self):
+        return self.__llamadas_encontradas
     
+    def add_llamada_encontrada(self, llamada):
+        self.__llamadas_encontradas.append(llamada)
+
+    
+
+    # METODOS
+
+    # Metodos de botones
+
+    # Se debe crear una funcion para recibir el input del boton
+    def tomar_boton_buscar(self):
+        # Mensaje 4
+        self.pantalla.solicitar_periodo()
+
+    def tomar_boton_seleccionar(self):
+        # Mensaje 13
+        self.pantalla.solicitar_seleccion_llamada()
+
 
 
 
     # Metodos de ejecucion de CU
 
-    # Mensaje 3
+    # Mensaje 3 (Me parece que no se implementa)
     def nueva_consulta_encuesta(self):
-        # Mensaje 4 al 7
-        # self.__pantalla.solicitar_periodo()
-        # Mensaje 8
-        
-        llamadas_en_periodo_con_respuesta = self.buscar_llamadas_en_periodo()
-        print("Llamadas encontradas!!")
-        # Mensaje 12
-        self.pantalla.mostrar_llamadas_con_rta(llamadas_en_periodo_con_respuesta)
+        pass
 
 
-    def tomar_boton_buscar(self):
-        self.pantalla.solicitar_periodo()
 
 
-    def buscar_llamadas(self):
-        llamadas_en_periodo_con_respuesta = self.buscar_llamadas_en_periodo()
-        print("Llamadas encontradas!!")
-        # Mensaje 12
-        self.pantalla.mostrar_llamadas_con_rta(llamadas_en_periodo_con_respuesta)
+
+
+
+ 
 
 
     # Mensaje 7
@@ -153,6 +169,13 @@ class GestorConsultaEncuesta:
         self.fecha_fin_periodo = fecha_fin_date
 
 
+    # Mensaje previo al 8
+    def buscar_mostrar_llamadas(self):
+        # Mensaje 8
+        llamadas_en_periodo_con_respuesta = self.buscar_llamadas_en_periodo()
+
+        # Mensaje 12
+        self.pantalla.mostrar_llamadas_con_rta(llamadas_en_periodo_con_respuesta)
 
     # Mensaje 8
     def buscar_llamadas_en_periodo(self):
@@ -172,9 +195,34 @@ class GestorConsultaEncuesta:
                 # print("llamada en periodo y con respuesta")
                 datos_llamada = {"operador": llamada.descripcion_operador, "fecha": llamada.get_fecha_inicio()}
                 llamadas_en_periodo_con_respuesta.append(datos_llamada)
+                # Agregar al atributo de llamadas encontradas
+                self.add_llamada_encontrada(llamada)
 
         return llamadas_en_periodo_con_respuesta
     
+    # Utilizado en mensaje 15
+    def buscar_llamada_con_string(self, llamada_seleccionada_string):
+        for llamada in self.llamadas_encontradas:
+            datos_llamada = {"operador": llamada.descripcion_operador, 
+                           "fecha": llamada.get_fecha_inicio()}
+            if from_call_dictionary_to_string(datos_llamada) == llamada_seleccionada_string:
+                return llamada
+
+    # Mensaje 15
+    def tomar_seleccion_llamada(self, llamada_seleccionada_string):
+        llamada_seleccionada = self.buscar_llamada_con_string(llamada_seleccionada_string)
+        # print(llamada_seleccionada, llamada_seleccionada.descripcion_operador)
+        self.llamada_seleccionada = llamada_seleccionada
+
+
+    # Mensaje previo al 16
+    def buscar_mostrar_datos_llamada(self):
+        # Mensaje 16 (Desde el 16 al 33)
+        datos_llamada = self.buscar_datos_llamada()
+
+        # Mensaje 34
+        # print(datos_llamada)
+        self.pantalla.mostrar_datos_llamada(datos_llamada)
 
 
     # Mensaje 16
