@@ -1,9 +1,3 @@
-
-
-# -------------
-# - Pruebilla -
-# -------------
-
 # CADA INSTANCIA DE CADA CLASE DEBE SER CREADA EN EL ARCHIVO DE LA CLASE CORRESPONDIENTE, 
 # ASI CUANDO IMPORTEMOS CADA MODULO, SE IMPORTA LA CLASE Y LOS OBJETOS, EN ESTE CASO DE PRUEBA
 
@@ -189,18 +183,7 @@ print(datos_llamada.get("cliente"))
 
 """ 
 
-
-
 # Prueba 16 - 33
-
-
-
-
-
-
-
-
-
 
 """
 
@@ -222,33 +205,27 @@ print(datos_llamada.get("datos_encuesta"))
 """
 
 
+def main():
+    gestor1 = GestorConsultaEncuesta()
+    pantalla1 = PantallaConsultarEncuesta()
 
 
-# TEST PANTALLA Y GESTOR
+    gestor1.pantalla = pantalla1
+    pantalla1.gestor = gestor1
+
+    for llamda in datos.llamadas:
+        gestor1.add_llamada(llamda)
+    for e in datos.encuestas:
+        gestor1.add_encuesta(e)
+
+
+    pantalla1.opcion_consultar_encuesta()
+    
 
 
 
-gestor1 = GestorConsultaEncuesta()
-pantalla1 = PantallaConsultarEncuesta()
+if __name__ == "__main__":
+    main()
 
 
-gestor1.pantalla = pantalla1
-pantalla1.gestor = gestor1
 
-for llamda in datos.llamadas:
-    gestor1.add_llamada(llamda)
-for e in datos.encuestas:
-    gestor1.add_encuesta(e)
-
-
-gestor1.fecha_inicio_periodo = date(2021,5,3)
-gestor1.fecha_fin_periodo = date(2023,5,3)
-
-pantalla1.habilitar_ventana()
-
-# FALTA AGREGAR BOTONES DE CANCELACION
-
-"""
-
-
-"""

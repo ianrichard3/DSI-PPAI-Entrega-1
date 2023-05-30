@@ -12,6 +12,7 @@ from Support.funciones_soporte import from_call_dictionary_to_string
 
 
 
+
 class GestorConsultaEncuesta:
     # def __init__(self, fecha_inicio_periodo: date, fecha_fin_periodo: date, llamada_seleccionada: llamada.Llamada,
     #               tipo_salida_consulta_seleccionada: str):
@@ -26,10 +27,21 @@ class GestorConsultaEncuesta:
         self.__llamada_seleccionada = None
         self.__tipo_salida_consulta_seleccionada = None
 
+        # Simulacion de Base de datos
         self.__llamadas = []
         self.__encuestas = []
 
+        # Atributos de "auxilio"
         self.__llamadas_encontradas = []
+        self.__datos_llamada_seleccionada = None
+
+        # Ruta del csv
+        self.ruta_csv = os.path.join(this_file_path, "../Csvs/csv_prueba.csv")
+
+        print(f"RUTA CSV: {self.ruta_csv}")
+
+
+
 
     # -------------------
     # Getters & Setters -
@@ -71,6 +83,17 @@ class GestorConsultaEncuesta:
     def llamada_seleccionada(self, value):
         # Executes this code when object.att = value
         self.__llamada_seleccionada = value
+
+    # Getter datos_llamada_seleccionada
+    @property
+    def datos_llamada_seleccionada(self):
+        # Executes this code when object.att
+        return self.__datos_llamada_seleccionada
+    # Setter datos_llamada_seleccionada
+    @datos_llamada_seleccionada.setter
+    def datos_llamada_seleccionada(self, value):
+        # Executes this code when object.att = value
+        self.__datos_llamada_seleccionada = value
     
     # Getter tipo_salida_consulta_seleccionada
     @property
@@ -141,8 +164,8 @@ class GestorConsultaEncuesta:
     # Mensajes 35-37
     def tomar_boton_generar_csv(self):
        # Mensaje 38
+        print("CSV Generado!")
         self.generar_csv()
-        print("Se genera el CSV")
 
 
 
@@ -164,8 +187,8 @@ class GestorConsultaEncuesta:
         de Inicio del periodo y la fecha fin
         """
         print("Se toma periodo")
-        fecha_inicio_date = from_string_to_date(fecha_inicio, "%m/%d/%y")
-        fecha_fin_date = from_string_to_date(fecha_fin, "%m/%d/%y")
+        fecha_inicio_date = from_string_to_date(fecha_inicio)
+        fecha_fin_date = from_string_to_date(fecha_fin)
         self.fecha_inicio_periodo = fecha_inicio_date
         self.fecha_fin_periodo = fecha_fin_date
 
@@ -188,7 +211,7 @@ class GestorConsultaEncuesta:
         # fecha_fin_periodo_date = from_string_to_date(fecha_fin_periodo)
         # Las fechas del periodo son atributos del objeto de gestor
         """
-        
+
         llamadas_en_periodo_con_respuesta = []
         for llamada in self.llamadas:
             # Ejecutamos dos metodos de llamada y le pasamos por parametro los atributos de gestor (fechas periodo: formato date)
@@ -236,11 +259,11 @@ class GestorConsultaEncuesta:
         duracion_llamada = self.llamada_seleccionada.calcular_duracion()
         # Mensaje 24
         datos_encuestas_por_respuesta_cliente = self.buscar_encuesta_de_respuesta()
-
-        return {"cliente": nombre_cliente_llamada,
-                "estado_actual": nombre_estado_actual,
-                "duracion": duracion_llamada,
-                "datos_encuesta": datos_encuestas_por_respuesta_cliente}
+        self.datos_llamada_seleccionada = {"cliente": nombre_cliente_llamada,
+                                            "estado_actual": nombre_estado_actual,
+                                            "duracion": duracion_llamada,
+                                            "datos_encuesta": datos_encuestas_por_respuesta_cliente}
+        return self.datos_llamada_seleccionada
 
     # Mensaje 19
     def buscar_ultimo_estado_llamada(self):
@@ -286,64 +309,28 @@ class GestorConsultaEncuesta:
 
     # Mensaje 38
     def generar_csv(self):
-        pass
+        nombre_cliente = self.datos_llamada_seleccionada.get("cliente")
+        estado_actual = self.datos_llamada_seleccionada.get("estado_actual")
+        duracion = self.datos_llamada_seleccionada.get("duracion")
+        encabezado = f"{nombre_cliente},{estado_actual},{duracion}"
+        lineas_preguntas = ["Pregunta,Respuesta;"]
+        for pregunta in self.datos_llamada_seleccionada.get("datos_encuesta"):
+            preg = pregunta.get("pregunta")
+            respuesta = pregunta.get("respuesta")
+            lineas_preguntas.append(f"{preg},{respuesta};")
+        texto_final = encabezado + "\n" + "\n".join(lineas_preguntas)
+        self.crear_archivo_csv(texto_final)
+    
+    def crear_archivo_csv(self, datos):
+        with open(self.ruta_csv, "wt") as f:
+            f.write(datos)
+
+        
 
 
 
 
 
-
-
-
-"""
-# ---------------
-# -  Pruebilla  -
-# ---------------
-
-# CADA INSTANCIA DE CADA CLASE DEBE SER CREADA EN EL ARCHIVO DE LA CLASE CORRESPONDIENTE, 
-# ASI CUANDO IMPORTEMOS CADA MODULO, SE IMPORTA LA CLASE Y LOS OBJETOS, EN ESTE CASO DE PRUEBA
-
-# import Estado.cambio_estado
-from llamada import Llamada
-from cliente import Cliente
-from Estado.cambio_estado import CambioEstado
-from Estado.estado import Estado
-from respuesta_de_cliente import RespuestaDeCliente
-from respuesta_posible import RespuestaPosible
-
-r_posible = RespuestaPosible("Correcto", "12")
-
-r_cliente = RespuestaDeCliente(datetime(2001, 4, 12, 18, 34, 20), r_posible)
-
-estado_iniciado = Estado("Iniciado")
-cambio_estado_1 = CambioEstado(datetime(2001, 4, 12, 18, 14, 20), estado_iniciado) 
-cambio_estado_2 = CambioEstado(datetime(2012, 4, 12, 18, 14, 20), estado_iniciado) 
-
-# cambio_estado_3 = CambioEstado(datetime(2022, 4, 12, 18, 14, 20), estado_iniciado) 
-
-cliente1 = Cliente("23453432", "Humberto Primo", "3513433777")
-
-llamada1 = Llamada("Flaquito 1", "Llama profesional", 3.3, True, "Completada", cliente1, cambio_estado_1)
-llamada1.add_respuesta_encuesta(r_cliente)
-
-llamada2 = Llamada("Furroberto", "Llama a Motel", 6.7, True, "Completada", cliente1, cambio_estado_2)
-
-
-fecha_inicio_periodo = date(2000, 4, 21)
-fecha_fin_periodo = date(2009, 4, 21)
-
-gestor = GestorConsultaEncuesta()
-gestor.fecha_inicio_periodo = fecha_inicio_periodo
-gestor.fecha_fin_periodo = fecha_fin_periodo
-gestor.llamadas.append(llamada1)
-gestor.llamadas.append(llamada2)
-
-filtro = gestor.buscar_llamadas_en_periodo()
-print(filtro)
-for llamada_found in filtro:
-    print(llamada_found.descripcion_operador)
-
-"""
 
 
 if __name__ == "__main__":

@@ -46,12 +46,12 @@ class Pregunta:
     
     # Metodos de CU
 
-    # Mensaje 31.a
+    # Mensaje 31.1
     def listar_respuestas_posibles(self):
         """
         Busca en todas sus respuestas posibles, las descripciones
         """
-        # Mensaje 31.b
+        # Mensaje 31.2
         descripciones_respuestas = [rta.descripcion for rta in self.respuestas]
         # for rta in self.respuestas:
         #     descripciones_respuestas.append(rta.descripcion)  # mensaje 31.b

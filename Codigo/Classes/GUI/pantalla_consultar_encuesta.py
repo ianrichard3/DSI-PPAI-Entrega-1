@@ -4,65 +4,56 @@ import tkcalendar as tkc
 
 import os
 import sys
-
-
+from datetime import datetime
 
 this_file_path = os.path.dirname(__file__)
 sys.path.append(os.path.join(this_file_path, "...\\"))
 
-# print(os.path.join(this_file_path))
-# from Classes.GUI.Top_Level.llamada_seleccionada_top_level import LlamadaSeleccionadaTopLevel
-
 from Classes.GUI.Top_Level.llamada_seleccionada_top_level import LlamadaSeleccionadaTopLevel
 from Classes.GUI.Top_Level.message_box_top_level import MessageBoxTopLevel
-
-# from gestor_consulta_encuesta import GestorConsultaEncuesta
 from Support.funciones_soporte import from_string_to_date
 from Support.funciones_soporte import from_call_dictionary_to_string
 
-# from Support.funciones_soporte import from_call_string_get_call_object
+
+
 
 # Constantes
 
-FUENTE = "Helvetica"
+BUTTONS_SIZES = (140, 50)
+SCREEN_SIZE = (800, 600)
+CORNER_RADIUS = 10
+FUENTE = "Arial"
 
-llamadas_array = [
-    "Llamada 1 | Ian Richard | Fecha 12/4/2022 | Hora 14:22",
-    "Llamada 2 | Ian Rechard | Fecha 12/6/2022 | Hora 22:22",
-    "Llamada 3 | Ian Rochard | Fecha 2/4/2022 | Hora 11:11",
-    "Llamada 4 | Ian Ruchard | Fecha 11/4/2022 | Hora 14:22",
-    "Llamada 5 | Ian Rachard | Fecha 31/3/2022 | Hora 14:13",
-
-]
 
 # Theme setup
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("dark-blue")
 
 
-
-
-
-
-# class FrameDatosLlamadaSeleccionada(ctk.CTkScrollableFrame):
-#     def __init__(self, master, **kwargs):
-#         super().__init__(master, **kwargs)
-
-#         # Aca van los widgets del frame de los datos
-#         # De la llamada Seleccionada
-
-
+# Clase Pantalla
 
 class PantallaConsultarEncuesta(ctk.CTk):
     def __init__(self):
         super().__init__()
         self.geometry("800x600")
-        self.title("TESTEANDO")
+        self.title("Consultar Encuesta")
         self.resizable(False, False)
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=1)
         self.grid_columnconfigure(2, weight=1)
         self.grid_columnconfigure(3, weight=1)
+
+        # rows
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_rowconfigure(1, weight=1)
+        self.grid_rowconfigure(2, weight=1)
+        self.grid_rowconfigure(3, weight=1)
+        self.grid_rowconfigure(4, weight=1)
+        self.grid_rowconfigure(5, weight=1)
+        self.grid_rowconfigure(6, weight=1)
+        self.grid_rowconfigure(7, weight=1)
+
+        self.configure(fg_color="#121A22")
 
         # Lista llamadas encontradas
         self.__lista_llamadas = None
@@ -72,23 +63,37 @@ class PantallaConsultarEncuesta(ctk.CTk):
 
         # Labels    
         self.__titulo_lbl = ctk.CTkLabel(master=self, text="Consultar Encuesta", font=(FUENTE, 23))
-        self.__fecha_inicio_lbl = ctk.CTkLabel(master=self, text="Fecha Inicio", font=(FUENTE, 15))
-        self.__fecha_fin_lbl = ctk.CTkLabel(master=self, text="Fecha Fin", font=(FUENTE, 15))
-        self.__llamadas_encontradas_lbl = ctk.CTkLabel(master=self, text="Llamadas encontradas", font=(FUENTE, 15))
+        self.__fecha_inicio_lbl = ctk.CTkLabel(master=self, text="Fecha Inicio", font=(FUENTE, 15), fg_color="#50616A", corner_radius=CORNER_RADIUS)
+        self.__fecha_fin_lbl = ctk.CTkLabel(master=self, text="Fecha Fin", font=(FUENTE, 15), fg_color="#50616A", corner_radius=CORNER_RADIUS)
+        self.__llamadas_encontradas_lbl = ctk.CTkLabel(master=self, text="Llamadas encontradas", font=(FUENTE, 20), anchor="s")
         
         # DateEntries
-        self.__fecha_inicio_date_entry = tkc.DateEntry(master=self, selectmode="day")
-        self.__fecha_fin_date_entry = tkc.DateEntry(master=self, selectmode="day")
+        self.__fecha_inicio_date_entry = tkc.DateEntry(master=self, selectmode="day", date_pattern="dd/mm/y",
+                                                        borderwidth=5, font=FUENTE + " 10", tooltipforeground="#FF1414",
+                                                        showweeknumbers=False, 
+                                                        mindate=datetime(2010,1,1), maxdate=datetime(2029,12,31))
+        # self.__fecha_inicio_date_entry = tkc.Calendar(master=self)
+        self.__fecha_fin_date_entry = tkc.DateEntry(master=self, selectmode="day", date_pattern="dd/mm/y",
+                                                     borderwidth=5, font=FUENTE + " 10", showweeknumbers=False,
+                                                     mindate=datetime(2010,1,1), maxdate=datetime(2029,12,31))
 
         # Botones
 
-        self.__comenzar_busqueda_btn = ctk.CTkButton(master=self, text="Buscar", font=(FUENTE, 23), command=self.evento_boton_buscar)
-        self.__seleccionar_llamada_btn = ctk.CTkButton(master=self, text="Seleccionar", font=(FUENTE, 23), command=None)
-        self.__cancelar_busqueda_btn = ctk.CTkButton(master=self, text="Cancelar", font=(FUENTE, 23), command=self.evento_boton_cancelar)
+        self.__comenzar_busqueda_btn = ctk.CTkButton(master=self, text="Buscar", font=(FUENTE, 23), 
+                                                     command=self.evento_boton_buscar, width=BUTTONS_SIZES[0],
+                                                       height=BUTTONS_SIZES[1], corner_radius=CORNER_RADIUS,
+                                                       border_width=2, border_color="#2E4D72")
+        self.__seleccionar_llamada_btn = ctk.CTkButton(master=self, text="Seleccionar", font=(FUENTE, 23), 
+                                                       command=None, width=BUTTONS_SIZES[0], height=BUTTONS_SIZES[1], 
+                                                        corner_radius=CORNER_RADIUS, border_width=2, border_color="#2E4D72")
+        self.__cancelar_busqueda_btn = ctk.CTkButton(master=self, text="Cancelar", font=(FUENTE, 23),
+                                                    command=self.evento_boton_cancelar, width=BUTTONS_SIZES[0],
+                                                      height=BUTTONS_SIZES[1], corner_radius=CORNER_RADIUS,
+                                                      border_width=2, border_color="#2E4D72")
 
         # Combo Box
         self.__llamadas_encontradas_combo = ctk.CTkComboBox(master=self, values=[],
-        height=35, width=400, hover=True)
+        height=50, width=400, hover=True, font=(FUENTE, 15), corner_radius=10)
 
         # Frame Datos Llamada
         # self.__lista_datos_llamada = FrameDatosLlamadaSeleccionada(master=self)
@@ -139,24 +144,27 @@ class PantallaConsultarEncuesta(ctk.CTk):
         self.__titulo_lbl.grid(padx=15, pady=15 ,row=0, column=0, columnspan=4)
 
     def mostrar_input_fecha_inicio(self):
-        self.__fecha_inicio_lbl.grid(padx=15, pady=15 ,row=1, column=0, columnspan=2)
+        self.__fecha_inicio_lbl.grid(ipadx=5, ipady=5 ,padx=15, pady=10 ,row=1, column=0, columnspan=2)
         self.__fecha_inicio_date_entry.grid(padx=15, pady=15 ,row=2, column=0, columnspan=2)
+        
 
     def mostrar_input_fecha_fin(self):
-        self.__fecha_fin_lbl.grid(padx=15, pady=15 ,row=1, column=2, columnspan=2)
+        self.__fecha_fin_lbl.grid(ipadx=10, ipady=5, padx=15, pady=10 ,row=1, column=2, columnspan=2)
         self.__fecha_fin_date_entry.grid(padx=15, pady=15 ,row=2, column=2, columnspan=2)
+
+
 
     def mostrar_boton_buscar(self):
         self.__comenzar_busqueda_btn.grid(padx=15, pady=15 ,row=3, column=0, columnspan=4)
 
     def mostrar_lista_llamadas_encontradas(self):
-        self.__llamadas_encontradas_lbl.grid(padx=15, pady=15, row=4, column=0, columnspan=4)
-        self.__llamadas_encontradas_combo.grid(padx=15, pady=15, row=6, column=0, columnspan=4)
+        self.__llamadas_encontradas_lbl.grid(ipadx=10, ipady=5, padx=15, pady=15, row=4, column=0, columnspan=4)
+        self.__llamadas_encontradas_combo.grid(padx=15, pady=10, row=5, column=0, columnspan=4)
         self.__llamadas_encontradas_combo.set("No hay llamadas en periodo")
-        self.__seleccionar_llamada_btn.grid(padx=15, pady=15, row=7, column=0, columnspan=4)
+        self.__seleccionar_llamada_btn.grid(padx=15, pady=25, row=6, column=0, columnspan=4)
 
     def mostrar_boton_cancelacion(self):
-        self.__cancelar_busqueda_btn.grid(padx=15, pady=15 ,row=8, column=0, columnspan=4)
+        self.__cancelar_busqueda_btn.grid(padx=15, pady=25 ,row=7, column=0, columnspan=4)
     
     
     # Eventos de Boton
@@ -180,6 +188,9 @@ class PantallaConsultarEncuesta(ctk.CTk):
 
 
     # Metodos RCU
+
+    def opcion_consultar_encuesta(self):
+        self.habilitar_ventana()
 
     # Mensaje 2
     def habilitar_ventana(self):
@@ -233,7 +244,7 @@ class PantallaConsultarEncuesta(ctk.CTk):
         preguntas = datos_llamada.get("datos_encuesta")
         encuesta = preguntas[0].get("encuesta")
 
-        cliente = f"Nombre de cliente:    {cliente}"
+        cliente = f"Cliente: {cliente}"
         estado_actual_duracion = f"Estado actual: {estado_actual}\nDuracion: {duracion} minutos"
         encuesta = f"Encuesta: {encuesta}"
         preguntas = [ "Pregunta: " 

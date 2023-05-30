@@ -149,7 +149,7 @@ class Llamada:
         fecha_hora_inicio_llamada = self.cambios_estado[0].fecha_hora_inicio
         fecha_hora_fin_llamada = self.cambios_estado[-1].fecha_hora_inicio
         duracion = fecha_hora_fin_llamada - fecha_hora_inicio_llamada 
-        return duracion.min
+        return round(duracion.seconds/60, 2)
     
     def get_fecha_inicio(self):
         primer_cambio_estado = self.cambios_estado[0]

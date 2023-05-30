@@ -1,19 +1,31 @@
 import customtkinter as ctk
 import tkinter as tk
 
+# Constantes
 
+BUTTONS_SIZES = (140, 50)
+SCREEN_SIZE = (800, 600)
+CORNER_RADIUS = 10
+FUENTE = "Arial"
+TEXT_FONT_SIZE = 19
 
 class MessageBoxTopLevel(ctk.CTkToplevel):
     def __init__(self, *args, **kwargs, ):
         super().__init__(*args, **kwargs)
 
-        self.geometry("250x200")
+        self.geometry("300x250")
         self.resizable(False, False)
+        self.grid_rowconfigure(0, weight=1)
+        self.grid_rowconfigure(1, weight=1)
+        self.grid_columnconfigure(0, weight=1)
+        self.configure(fg_color="#333E4A")
 
 
-        self.__mensaje_lbl = ctk.CTkLabel(master=self)
+        self.__mensaje_lbl = ctk.CTkLabel(master=self, font=(FUENTE, TEXT_FONT_SIZE), wraplength=200)
 
-        self.__boton = ctk.CTkButton(master=self)
+        self.__boton = ctk.CTkButton(master=self, font=(FUENTE, 23), command=self.evento_boton,
+                                     width=BUTTONS_SIZES[0]+5, height=BUTTONS_SIZES[1], corner_radius=CORNER_RADIUS,
+                                           border_width=2, border_color="#23354B")
 
         # Si se aprieta la x
         self.protocol("WM_DELETE_WINDOW", lambda: exit())
@@ -23,11 +35,11 @@ class MessageBoxTopLevel(ctk.CTkToplevel):
 
     def mostrar_mensaje(self, titulo_mensaje, mensaje, texto_boton):
         self.title(titulo_mensaje)
-        self.__mensaje_lbl.configure(text=mensaje, font=("Helvetica", 15), wraplength=200)
-        self.__boton.configure(text=texto_boton, font=("Helvetica", 15), command=self.evento_boton)
-        self.__mensaje_lbl.pack(padx=20, pady=20, anchor="n")
-        self.__boton.pack(padx=20, pady=10, anchor="s")
-        # self.__mensaje_lbl.configure(text=mensaje, font=("Helvetica", 15), wraplength=200)
+        self.__mensaje_lbl.configure(text=mensaje)
+        self.__boton.configure(text=texto_boton)
+        self.__mensaje_lbl.grid(row=0, column=0, padx=20, pady=20)
+        self.__boton.grid(row=1, column=0, padx=20, pady=10)
+        # self.__mensaje_lbl.configure(text=mensaje, font=(FUENTE, 15), wraplength=200)
 
 
 

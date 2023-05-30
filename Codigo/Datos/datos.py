@@ -41,7 +41,7 @@ def crear_llamada(fecha_hora_ce1, fecha_hora_ce2, dni, nombre, nro, operador,
 
 
 # llamada 1
-llamadas.append(crear_llamada(datetime(2022,5,3,13), datetime(2022,5,3,16),
+llamadas.append(crear_llamada(datetime(2022,5,3,16,10), datetime(2022,5,3,16,50),
               "23456789", "María Rodríguez", "3672345678",
               "Operador2", "Denunciar robo", True, "ConObservacion",
               [(date(2020,4,5), RespuestaPosible("Si", "1")),
@@ -50,7 +50,7 @@ llamadas.append(crear_llamada(datetime(2022,5,3,13), datetime(2022,5,3,16),
 
 
 # llamada 2
-llamadas.append(crear_llamada(datetime(2017,3,8,13), datetime(2017,2,5,16),
+llamadas.append(crear_llamada(datetime(2017,3,8,13,13), datetime(2017,3,8,13,43),
               "12345678", "Juan Perez", "5551234567",
               "Operador1", "Comunicar Saldo", True, "SinObservacion",
               [(date(2020,4,5), RespuestaPosible("No, no se solucionó", "2")),
@@ -59,7 +59,7 @@ llamadas.append(crear_llamada(datetime(2017,3,8,13), datetime(2017,2,5,16),
 
 
 # llamada 3
-llamadas.append(crear_llamada(datetime(2022,8,5,23), datetime(2021,9,5,15),
+llamadas.append(crear_llamada(datetime(2021,8,5,10,23), datetime(2021,8,5,10,55),
               "34567890", "Carlos González", "5763456789",
               "Operador3", "Dar baja tarjeta", True, "SinObservacion",
               [(date(2020,4,5), RespuestaPosible("Si", "1")),
@@ -67,7 +67,7 @@ llamadas.append(crear_llamada(datetime(2022,8,5,23), datetime(2021,9,5,15),
 
 
 # llamada 4
-llamadas.append(crear_llamada(datetime(2013,3,6,13), datetime(2013,2,5,16),
+llamadas.append(crear_llamada(datetime(2013,2,5,20,0), datetime(2013,2,5,20,36),
               "23456789", "Juan Cruz", "3541237683",
               "Operador1", "Comunicar Saldo", True, "ConObservacion",
               [(date(2017,3,5), RespuestaPosible("Regular", "3")),
