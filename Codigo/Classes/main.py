@@ -19,9 +19,8 @@ from Classes.encuesta import Encuesta
 from Classes.pregunta import Pregunta
 from Classes.gestor_consulta_encuesta import GestorConsultaEncuesta
 from Classes.GUI.pantalla_consultar_encuesta import PantallaConsultarEncuesta
+
 import Datos.datos as datos
-
-
 
 
 
@@ -93,21 +92,12 @@ pregunta1_encuesta2.add_respuesta(rta1_pregunta3_encuesta1)
 pregunta1_encuesta2.add_respuesta(rta2_pregunta3_encuesta1)
 
 
-
-
-
 encuesta1 = Encuesta("Encuesta numero 1", fecha_fin_vigencia)
 encuesta1.add_pregunta(pregunta1_encuesta1)
 encuesta1.add_pregunta(pregunta2_encuesta1)
 
 encuesta2 = Encuesta("Encuesta numero 2", fecha_fin_vigencia)
 encuesta2.add_pregunta(pregunta1_encuesta2)
-
-
-
-
-
-
 
 
 # datos llamada
@@ -186,7 +176,6 @@ print(datos_llamada.get("cliente"))
 # Prueba 16 - 33
 
 """
-
 # Objeto de Gestor
 gestor = GestorConsultaEncuesta()
 for l in datos.llamadas:

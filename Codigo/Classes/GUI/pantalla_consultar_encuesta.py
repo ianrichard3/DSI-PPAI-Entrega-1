@@ -213,8 +213,7 @@ class PantallaConsultarEncuesta(ctk.CTk):
     
     # Mensaje 12 y Mensaje 13
     def mostrar_llamadas_con_rta(self, lista_llamadas):
-        # print("llamadas mostradas")
-        print(lista_llamadas)
+        # print(lista_llamadas)
         self.lista_llamadas = lista_llamadas
         # Actualizar la combo box de la lista de las llamadas
         if lista_llamadas:

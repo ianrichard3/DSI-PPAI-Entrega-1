@@ -38,7 +38,6 @@ class GestorConsultaEncuesta:
         # Ruta del csv
         self.ruta_csv = os.path.join(this_file_path, "../Csvs/csv_prueba.csv")
 
-        print(f"RUTA CSV: {self.ruta_csv}")
 
 
 
@@ -156,6 +155,7 @@ class GestorConsultaEncuesta:
     def tomar_boton_buscar(self):
         # Mensaje 4
         self.pantalla.solicitar_periodo()
+        # ACA PODRIA ESTAR EL METODO buscar_mostrar_llamadas()
 
     def tomar_boton_seleccionar(self):
         # Mensaje 13
@@ -164,7 +164,9 @@ class GestorConsultaEncuesta:
     # Mensajes 35-37
     def tomar_boton_generar_csv(self):
        # Mensaje 38
-        print("CSV Generado!")
+        print("\n[ CSV Generado ]")
+        print(f"[ RUTA ] -> {self.ruta_csv}")
+
         self.generar_csv()
 
 
@@ -186,11 +188,12 @@ class GestorConsultaEncuesta:
         Toma por medio de la pantalla la fecha
         de Inicio del periodo y la fecha fin
         """
-        print("Se toma periodo")
+        print(f"[ Se ha tomado el periodo ] -> de {fecha_inicio} hasta {fecha_fin}")
         fecha_inicio_date = from_string_to_date(fecha_inicio)
         fecha_fin_date = from_string_to_date(fecha_fin)
         self.fecha_inicio_periodo = fecha_inicio_date
         self.fecha_fin_periodo = fecha_fin_date
+
 
 
     # Mensaje previo al 8
@@ -263,6 +266,8 @@ class GestorConsultaEncuesta:
                                             "estado_actual": nombre_estado_actual,
                                             "duracion": duracion_llamada,
                                             "datos_encuesta": datos_encuestas_por_respuesta_cliente}
+        print("\n[Datos a mostrar]")
+        print(self.datos_llamada_seleccionada)
         return self.datos_llamada_seleccionada
 
     # Mensaje 19
@@ -301,8 +306,10 @@ class GestorConsultaEncuesta:
         for encuesta in self.encuestas:
             # Mensaje 29
             datos_respuesta = encuesta.es_tu_respuesta(respuesta_cliente)
+            # print(datos_respuesta)
             # Si es respuesta posible de la encuesta
-            if datos_respuesta != False:
+            if datos_respuesta != False and datos_respuesta not in datos_respuesta_de_llamada:
+                # print(datos_respuesta)
                 datos_respuesta_de_llamada.append(datos_respuesta)
         return datos_respuesta_de_llamada
     

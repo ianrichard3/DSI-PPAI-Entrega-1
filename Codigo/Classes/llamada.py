@@ -164,7 +164,7 @@ class Llamada:
         fecha_inicio_llamada = self.get_fecha_inicio()
         # print(type(fecha_inicio_llamada))
         if fecha_inicio_periodo < fecha_inicio_llamada < fecha_fin_periodo:
-            print(f"Llamada en periodo!")
+            print(f"[ Llamada en periodo encontrada ] ")
             return True
         return False
     
